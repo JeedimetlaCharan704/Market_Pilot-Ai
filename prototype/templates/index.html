@@ -1,0 +1,2708 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MarketPilot AI — Autonomous Lead Hunter & Evidence-Driven Outreach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #090d16;
+  --bg-secondary: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-surface-hover: #273549;
+  --bg-card: rgba(15, 23, 42, 0.82);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --brand-primary: #0ea5e9;
+  --brand-accent: #06b6d4;
+  --brand-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  --accent-emerald: #10b981;
+  --accent-teal: #14b8a6;
+  --accent-violet: #8b5cf6;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.45);
+  --shadow-glow: 0 0 24px rgba(14, 165, 233, 0.25);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-surface: #f1f5f9;
+  --bg-surface-hover: #e2e8f0;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+  --shadow-glow: 0 0 24px rgba(14, 165, 233, 0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
+}
+
+/* Background Ambient Lighting */
+.ambient-glow {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 380px;
+  background: radial-gradient(circle at 50% -80px, rgba(14, 165, 233, 0.18), transparent 70%),
+              radial-gradient(circle at 85% -50px, rgba(139, 92, 246, 0.15), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* Header & Top Bar */
+header {
+  padding: 24px 0 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 24px;
+}
+
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--brand-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.4);
+}
+
+.brand-title h1 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title h1 span.badge-track {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--brand-accent);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  text-transform: uppercase;
+}
+
+.brand-title p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+}
+
+.live-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.btn-icon {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+/* System Telemetry Ribbon */
+.telemetry-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  font-size: 12px;
+  margin-top: 16px;
+}
+
+.telemetry-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.telemetry-item strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.telemetry-sep {
+  color: var(--text-dim);
+}
+
+/* KPI Dashboard Cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.kpi-card.active-filter {
+  border-color: var(--brand-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.kpi-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.kpi-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.kpi-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* Lead Hunter / Search Box Card */
+.hunter-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.hunter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.hunter-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hunter-rule-badge {
+  font-size: 11px;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-emerald);
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  font-weight: 600;
+}
+
+.hunter-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.form-input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+  background: var(--bg-surface-hover);
+}
+
+.preset-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+  align-items: center;
+}
+
+.preset-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.preset-chip {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.preset-chip:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.btn-primary {
+  background: var(--brand-gradient);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(14, 165, 233, 0.45);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-accent {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-accent:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: rgba(244, 63, 94, 0.12);
+  color: var(--accent-rose);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.btn-danger:hover {
+  background: rgba(244, 63, 94, 0.2);
+}
+
+/* Pipeline Autopilot Banner / Stepper */
+.pipeline-banner {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.pipeline-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--brand-gradient);
+}
+
+.pipeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pipeline-lead-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lead-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--brand-accent);
+}
+
+.pipeline-steps-track {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  position: relative;
+  margin-top: 8px;
+}
+
+.step-node {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.step-node.completed {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.step-node.current {
+  border-color: var(--brand-primary);
+  background: rgba(14, 165, 233, 0.12);
+  box-shadow: 0 0 12px rgba(14, 165, 233, 0.2);
+}
+
+.step-node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.step-node.completed .step-node-header { color: var(--accent-emerald); }
+.step-node.current .step-node-header { color: var(--brand-primary); }
+
+.step-node-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Workspace Layout: Split Grid */
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1100px) {
+  .workspace-grid.with-detail {
+    grid-template-columns: 480px 1fr;
+  }
+}
+
+/* Leads Management Card */
+.leads-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.leads-toolbar {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg-surface);
+}
+
+.leads-search-input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 12px 7px 32px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  width: 220px;
+  transition: all 0.2s;
+}
+
+.leads-search-input:focus {
+  border-color: var(--brand-primary);
+  width: 260px;
+}
+
+.search-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon-wrapper svg {
+  position: absolute;
+  left: 10px;
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.filter-btn {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-surface-hover);
+}
+
+.filter-btn.active {
+  background: var(--bg-primary);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+
+.view-toggles {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-primary);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.view-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+/* Leads Table View */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+table.leads-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  text-align: left;
+}
+
+table.leads-table th {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+table.leads-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+  transition: background-color 0.15s;
+}
+
+table.leads-table tbody tr {
+  cursor: pointer;
+}
+
+table.leads-table tbody tr:hover {
+  background: var(--bg-surface-hover);
+}
+
+table.leads-table tbody tr.selected-row {
+  background: rgba(14, 165, 233, 0.09);
+  position: relative;
+}
+
+table.leads-table tbody tr.selected-row td:first-child {
+  border-left: 3px solid var(--brand-primary);
+}
+
+/* Status Badges */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.st-DISCOVERED { background: rgba(148, 163, 184, 0.12); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.25); }
+.st-AUDITED { background: rgba(14, 165, 233, 0.14); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
+.st-NO_GAP { background: rgba(59, 130, 246, 0.14); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.st-DEMO_GENERATED { background: rgba(139, 92, 246, 0.14); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+.st-DRAFTED { background: rgba(245, 158, 11, 0.14); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+.st-SENT { background: rgba(16, 185, 129, 0.14); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.st-FAILED, .st-NO_WEBSITE { background: rgba(244, 63, 94, 0.14); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+/* Leads Card Grid View */
+.leads-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  padding: 16px;
+  max-height: 650px;
+  overflow-y: auto;
+}
+
+.lead-grid-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lead-grid-item:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+.lead-grid-item.selected-card {
+  border-color: var(--brand-primary);
+  background: rgba(14, 165, 233, 0.08);
+  box-shadow: 0 0 16px rgba(14, 165, 233, 0.15);
+}
+
+/* Detail Studio Drawer / Split Pane */
+.studio-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.studio-header {
+  padding: 20px 24px 16px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.studio-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.studio-title-main h2 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.studio-meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.studio-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-primary);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.studio-tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  padding: 0 16px;
+  overflow-x: auto;
+}
+
+.studio-tab-btn {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 12px 16px;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.studio-tab-btn:hover {
+  color: var(--text-main);
+}
+
+.studio-tab-btn.active {
+  color: var(--brand-accent);
+}
+
+.studio-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: var(--brand-accent);
+  border-radius: 2px;
+}
+
+.studio-pane {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(100vh - 340px);
+}
+
+/* Evidence Cards & Details */
+.evidence-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 14px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.evidence-card.gap-booking { border-left: 4px solid #f59e0b; }
+.evidence-card.gap-contact { border-left: 4px solid #3b82f6; }
+.evidence-card.gap-chat { border-left: 4px solid #10b981; }
+.evidence-card.gap-mobile { border-left: 4px solid #8b5cf6; }
+
+.ev-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.ev-title {
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ev-conf {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+}
+
+.ev-conf.medium { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.ev-conf.high { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.ev-conf.low { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+
+.ev-obs {
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.ev-why {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.ev-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+
+/* Mini-Demo Interactive Preview */
+.demo-preview-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  border: 1px solid var(--border-subtle);
+  border-bottom: none;
+}
+
+.device-switcher {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-primary);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.device-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.device-btn.active {
+  background: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.demo-iframe-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #000;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+  min-height: 540px;
+  transition: all 0.3s;
+}
+
+.demo-iframe {
+  width: 100%;
+  height: 560px;
+  border: none;
+  background: #fff;
+  transition: width 0.3s;
+}
+
+/* Email Composer Box */
+.email-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.email-header-meta {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-primary);
+}
+
+.email-field-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.email-field-row:last-child { margin-bottom: 0; }
+
+.email-field-label {
+  width: 60px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.email-subject-val {
+  font-weight: 600;
+  color: var(--text-main);
+  flex: 1;
+}
+
+.email-body-content {
+  padding: 20px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: var(--text-main);
+  background: var(--bg-surface);
+  min-height: 220px;
+}
+
+.email-edit-textarea {
+  width: 100%;
+  min-height: 240px;
+  padding: 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.6;
+  border-radius: var(--radius-md);
+  outline: none;
+  resize: vertical;
+}
+
+.email-compliance-notice {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Code Pre Inspector */
+pre.code-json {
+  background: #020617;
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+  max-height: 400px;
+}
+
+/* Toast Notifications */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-main);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 280px;
+  max-width: 440px;
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast.ok { border-left: 4px solid var(--accent-emerald); }
+.toast.warn { border-left: 4px solid var(--accent-amber); }
+.toast.err { border-left: 4px solid var(--accent-rose); }
+.toast.info { border-left: 4px solid var(--brand-primary); }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+.truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+a { color: var(--brand-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Responsive Adjustments */
+@media (max-width: 900px) {
+  .hunter-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .pipeline-steps-track {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .pipeline-banner {
+    padding: 16px;
+  }
+  .workspace-grid.with-detail {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .pipeline-steps-track {
+    grid-template-columns: 1fr 1fr;
+  }
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="ambient-glow"></div>
+
+<div class="app-wrapper">
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="nav-row">
+      <div class="brand-section">
+        <div class="brand-logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <h1>
+            MarketPilot AI
+            <span class="badge-track">Track 2: Marketing Agent</span>
+          </h1>
+          <p>Autonomous Local Business Discovery &rarr; Evidence Audit &rarr; Interactive Mini-Demo &rarr; Tailored Pitch</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-pill">
+          <div class="live-indicator"></div>
+          <span>Local Engine: <strong style="color:var(--text-main)">localhost:8000</strong></span>
+        </div>
+        <a href="/api/docs" target="_blank" class="btn-secondary" style="font-size:12px; padding:6px 10px;" title="Open Swagger API documentation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          API Docs
+        </a>
+        <button class="btn-icon" onclick="toggleTheme()" title="Toggle Dark/Light Mode" id="themeToggleBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live System Telemetry Bar -->
+    <div class="telemetry-bar" id="telemetryBar">
+      <span class="telemetry-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        Discovery: <strong id="telDiscovery">OSM Overpass (Live)</strong>
+      </span>
+      <span class="telemetry-sep">&bull;</span>
+      <span class="telemetry-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+        Reasoning: <strong id="telModel">Deterministic Template (LLM Seam Ready)</strong>
+      </span>
+      <span class="telemetry-sep">&bull;</span>
+      <span class="telemetry-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Outbox: <strong id="telEmail">Honest Log-Only (outbox.log)</strong>
+      </span>
+      <span class="telemetry-sep">&bull;</span>
+      <span class="telemetry-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 16,12 14,15 10,15 8,12 2,12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        Inbox: <strong id="telInbox">not configured</strong>
+        <button class="btn-secondary" style="font-size:11px;padding:2px 7px;margin-left:6px;" onclick="checkReplies()" title="Poll IMAP once, classify what came back, record opt-outs">Check replies</button>
+      </span>
+      <span class="telemetry-sep">&bull;</span>
+      <span class="telemetry-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        Etiquette: <strong>robots.txt check + 1.0s throttle</strong>
+      </span>
+    </div>
+  </header>
+
+  <!-- KPI Cards Row -->
+  <div class="kpi-grid">
+    <div class="kpi-card" onclick="setFilter('ALL')" id="kpi-all">
+      <div class="kpi-header">
+        <span class="kpi-title">Total Leads</span>
+        <div class="kpi-icon" style="background:rgba(14,165,233,0.15); color:var(--brand-primary)">📁</div>
+      </div>
+      <div class="kpi-value" id="kpiValTotal">0</div>
+      <div class="kpi-desc">In local SQLite database</div>
+    </div>
+
+    <div class="kpi-card" onclick="setFilter('AUDITED')" id="kpi-audited">
+      <div class="kpi-header">
+        <span class="kpi-title">Sites Audited</span>
+        <div class="kpi-icon" style="background:rgba(59,130,246,0.15); color:#60a5fa">🔍</div>
+      </div>
+      <div class="kpi-value" id="kpiValAudited">0</div>
+      <div class="kpi-desc">With verified evidence cards</div>
+    </div>
+
+    <div class="kpi-card" onclick="setFilter('DEMO_GENERATED')" id="kpi-demos">
+      <div class="kpi-header">
+        <span class="kpi-title">Demos Built</span>
+        <div class="kpi-icon" style="background:rgba(139,92,246,0.15); color:#c084fc">⚡</div>
+      </div>
+      <div class="kpi-value" id="kpiValDemos">0</div>
+      <div class="kpi-desc">Interactive HTML mini-sites</div>
+    </div>
+
+    <div class="kpi-card" onclick="setFilter('DRAFTED')" id="kpi-drafts">
+      <div class="kpi-header">
+        <span class="kpi-title">Pitches Formatted</span>
+        <div class="kpi-icon" style="background:rgba(245,158,11,0.15); color:#fbbf24">✉️</div>
+      </div>
+      <div class="kpi-value" id="kpiValDrafts">0</div>
+      <div class="kpi-desc">Tailored to exact observations</div>
+    </div>
+
+    <div class="kpi-card" onclick="setFilter('SENT')" id="kpi-sent">
+      <div class="kpi-header">
+        <span class="kpi-title">Outreach Sent</span>
+        <div class="kpi-icon" style="background:rgba(16,185,129,0.15); color:#34d399">🚀</div>
+      </div>
+      <div class="kpi-value" id="kpiValSent">0</div>
+      <div class="kpi-desc">Delivered or logged to outbox</div>
+    </div>
+  </div>
+
+  <!-- Interactive Hunter & Discovery Console -->
+  <div class="hunter-card">
+    <div class="hunter-header">
+      <h2>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        Hunter Console — Two Inputs in &rarr; Real Leads
+      </h2>
+      <div class="hunter-rule-badge">Strictly Live Calls &middot; Zero Mocks</div>
+    </div>
+
+    <div class="hunter-form-grid">
+      <div class="form-group">
+        <label class="form-label" for="svc">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 1-4.5 4.3L18 20l-6-3.2L6 20l1.5-6.7L3 9l6-1z"></path></svg>
+          What service do you offer?
+        </label>
+        <input type="text" id="svc" class="form-input" maxlength="120" placeholder="e.g. AI chatbot development, website development, business automation">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bt">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          Client / Business Category
+        </label>
+        <input type="text" id="bt" class="form-input" maxlength="120" placeholder="e.g. cafes, salons, dentists, bakeries" value="cafes">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="city">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Target City / Geographic Area
+        </label>
+        <input type="text" id="city" class="form-input" maxlength="120" placeholder="e.g. Hyderabad, Mumbai, Bangalore" value="Hyderabad">
+      </div>
+
+      <button id="go" class="btn-primary" onclick="doSearch()">
+        <span id="goIcon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <span id="goText">Discover Real Leads</span>
+      </button>
+    </div>
+
+    <!-- Quick Presets -->
+    <div class="preset-pills">
+      <span class="preset-label">Quick Ideas:</span>
+      <button class="preset-chip" onclick="applyPreset('cafes', 'Hyderabad')">☕ Cafes in Hyderabad</button>
+      <button class="preset-chip" onclick="applyPreset('salons', 'Mumbai')">💇 Salons in Mumbai</button>
+      <button class="preset-chip" onclick="applyPreset('dentists', 'Bangalore')">🦷 Dentists in Bangalore</button>
+      <button class="preset-chip" onclick="applyPreset('bakeries', 'Pune')">🥐 Bakeries in Pune</button>
+      <button class="preset-chip" onclick="applyPreset('boutique hotels', 'Goa')">🏨 Hotels in Goa</button>
+      <button class="preset-chip" onclick="applyPreset('gyms', 'Delhi')">🏋️ Gyms in Delhi</button>
+    </div>
+
+    <div id="searchMsg" style="font-size:12.5px; margin-top:12px; color:var(--text-muted); display:flex; align-items:center; gap:8px;"></div>
+  </div>
+
+  <!-- Selected Lead Pipeline Stepper & Autopilot Bar (Dynamic) -->
+  <div id="pipelineBanner" class="pipeline-banner hidden">
+    <div class="pipeline-header">
+      <div class="pipeline-lead-info">
+        <div class="lead-avatar" id="plAvatar">☕</div>
+        <div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <h3 id="plName" style="font-size:16px; font-weight:800;">Business Name</h3>
+            <span id="plStatusBadge" class="badge-status st-DISCOVERED">DISCOVERED</span>
+          </div>
+          <div id="plMeta" style="font-size:12px; color:var(--text-muted); margin-top:2px;">Target info</div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <button id="btnAutopilot" class="btn-primary" onclick="runAutopilot()" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>⚡ Run Full Autopilot</span>
+        </button>
+        <button id="btnResetLead" class="btn-danger" onclick="resetSelectedLead()" title="Reset this lead to DISCOVERED to test pipeline again">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 21v-5h5"></path></svg>
+          Reset Lead
+        </button>
+      </div>
+    </div>
+
+    <!-- Stepper nodes -->
+    <div class="pipeline-steps-track">
+      <div class="step-node" id="step-node-1">
+        <div class="step-node-header"><span>Step 1</span> <span class="step-icon">○</span></div>
+        <div class="step-node-title">1. Discovery</div>
+      </div>
+      <div class="step-node" id="step-node-2">
+        <div class="step-node-header"><span>Step 2</span> <span class="step-icon">○</span></div>
+        <div class="step-node-title">2. Website Audit</div>
+      </div>
+      <div class="step-node" id="step-node-3">
+        <div class="step-node-header"><span>Step 3</span> <span class="step-icon">○</span></div>
+        <div class="step-node-title">3. Evidence Proof</div>
+      </div>
+      <div class="step-node" id="step-node-4">
+        <div class="step-node-header"><span>Step 4</span> <span class="step-icon">○</span></div>
+        <div class="step-node-title">4. Mini-Demo</div>
+      </div>
+      <div class="step-node" id="step-node-5">
+        <div class="step-node-header"><span>Step 5</span> <span class="step-icon">○</span></div>
+        <div class="step-node-title">5. AI Outreach</div>
+      </div>
+      <div class="step-node" id="step-node-6">
+        <div class="step-node-header"><span>Step 6</span> <span class="step-icon">○</span></div>
+        <div class="step-node-title">6. Delivered</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Workspace Grid -->
+  <div class="workspace-grid" id="workspaceGrid">
+
+    <!-- Left Column: Leads Directory -->
+    <div class="leads-card">
+      <div class="leads-toolbar">
+        <div class="search-icon-wrapper">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="leadFilterInput" class="leads-search-input" placeholder="Filter leads by text..." oninput="handleTextFilter(this.value)">
+        </div>
+
+        <div class="filter-pills">
+          <button class="filter-btn active" onclick="setFilter('ALL')" id="flt-ALL">All (<span id="fltCntAll">0</span>)</button>
+          <button class="filter-btn" onclick="setFilter('DISCOVERED')" id="flt-DISCOVERED">New</button>
+          <button class="filter-btn" onclick="setFilter('AUDITED')" id="flt-AUDITED">Audited</button>
+          <button class="filter-btn" onclick="setFilter('DEMO_GENERATED')" id="flt-DEMO_GENERATED">Demos</button>
+          <button class="filter-btn" onclick="setFilter('DRAFTED')" id="flt-DRAFTED">Drafted</button>
+          <button class="filter-btn" onclick="setFilter('SENT')" id="flt-SENT">Sent</button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn-secondary" style="font-size:12px; padding:5px 9px;" onclick="exportCSV()" title="Export all leads to CSV">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Export
+          </button>
+          <div class="view-toggles">
+            <button class="view-btn active" id="btnViewTable" onclick="setViewMode('table')" title="Table View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            </button>
+            <button class="view-btn" id="btnViewGrid" onclick="setViewMode('grid')" title="Cards Grid View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table View -->
+      <div class="table-responsive" id="tableViewContainer">
+        <table class="leads-table">
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Website</th>
+              <th>Contact</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="leadTableBody">
+            <tr>
+              <td colspan="5" style="text-align:center; padding:32px; color:var(--text-dim);">
+                Loading leads repository...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Grid Cards View -->
+      <div class="leads-grid-container hidden" id="gridViewContainer"></div>
+    </div>
+
+    <!-- Right Column: Interactive Studio & Inspection Pane -->
+    <div class="studio-card hidden" id="studioContainer">
+      <div class="studio-header">
+        <div class="studio-title-row">
+          <div class="studio-title-main">
+            <h2 id="stLeadName">Select a Lead</h2>
+            <div class="studio-meta-chips" id="stMetaChips"></div>
+          </div>
+          <div id="stQuickActions" style="display:flex; gap:8px;"></div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="studio-tabs">
+        <button class="studio-tab-btn active" id="tab-btn-evidence" onclick="switchStudioTab('evidence')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Evidence & Proof (<span id="evCount">0</span>)
+        </button>
+        <button class="studio-tab-btn" id="tab-btn-demo" onclick="switchStudioTab('demo')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Interactive Mini-Demo
+        </button>
+        <button class="studio-tab-btn" id="tab-btn-email" onclick="switchStudioTab('email')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          Cold Pitch Studio
+        </button>
+        <button class="studio-tab-btn" id="tab-btn-audit" onclick="switchStudioTab('audit')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Raw Crawl Audit JSON
+        </button>
+      </div>
+
+      <!-- Tab Panes -->
+
+      <!-- 1. Evidence Pane -->
+      <div class="studio-pane" id="pane-evidence">
+        <div id="evidenceListContainer"></div>
+      </div>
+
+      <!-- 2. Demo Pane -->
+      <div class="studio-pane hidden" id="pane-demo">
+        <div class="demo-preview-bar">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; font-weight:700; color:var(--text-muted);">Viewport:</span>
+            <div class="device-switcher">
+              <button class="device-btn active" id="devDesktop" onclick="setDeviceViewport('100%', this)">🖥️ Desktop</button>
+              <button class="device-btn" id="devTablet" onclick="setDeviceViewport('768px', this)">📟 Tablet</button>
+              <button class="device-btn" id="devMobile" onclick="setDeviceViewport('375px', this)">📱 Mobile</button>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;" id="demoActionsRow"></div>
+        </div>
+
+        <div class="demo-iframe-container" id="iframeWrap">
+          <div id="demoEmptyState" style="text-align:center; padding:80px 20px; color:var(--text-dim);">
+            <div style="font-size:36px; margin-bottom:12px;">⚡</div>
+            <h3 style="color:var(--text-main); font-size:16px; margin-bottom:6px;">No Mini-Demo Generated Yet</h3>
+            <p style="font-size:13px; max-width:360px; margin:0 auto 16px;">
+              Auditing the business uncovers verified gaps. Then MarketPilot builds a real, self-contained HTML mini-demo solving that exact problem.
+            </p>
+            <button class="btn-primary" onclick="triggerStep('demo')">Generate Demo Now</button>
+          </div>
+          <iframe id="demoIframe" class="demo-iframe hidden"></iframe>
+        </div>
+      </div>
+
+      <!-- 3. Email Pitch Pane -->
+      <div class="studio-pane hidden" id="pane-email">
+        <div id="emailPitchContainer">
+          <div id="emailEmptyState" style="text-align:center; padding:80px 20px; color:var(--text-dim);">
+            <div style="font-size:36px; margin-bottom:12px;">✉️</div>
+            <h3 style="color:var(--text-main); font-size:16px; margin-bottom:6px;">No Pitch Drafted Yet</h3>
+            <p style="font-size:13px; max-width:360px; margin:0 auto 16px;">
+              Generate the mini-demo first so the outreach email can reference the live demo preview URL and exact verified observations.
+            </p>
+            <button class="btn-primary" onclick="triggerStep('draft')">Draft Email Pitch</button>
+          </div>
+
+          <div id="emailBoxWrap" class="hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:var(--bg-surface); padding:8px 12px; border-radius:var(--radius-md); border:1px solid var(--border-subtle); flex-wrap:wrap; gap:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:12px; font-weight:700; color:var(--text-main);">🌐 Language / Dialect:</span>
+                <select id="selOutreachLang" onchange="changeOutreachLanguage()" style="background:var(--bg-surface-hover); color:var(--text-main); border:1px solid var(--border-strong); border-radius:4px; padding:3px 8px; font-size:12px; font-family:inherit;">
+                  <option value="auto">Auto-Detect by City</option>
+                  <option value="english">English (Professional)</option>
+                  <option value="telugu">Telugu + English (Tenglish / Hyderabad)</option>
+                  <option value="hindi">Hindi + English (Hinglish / North)</option>
+                  <option value="marathi">Marathi + English (Maharashtra)</option>
+                </select>
+              </div>
+              <button onclick="syncToCRM()" class="btn-xs" style="background:rgba(99,102,241,0.15); border:1px solid rgba(99,102,241,0.3); color:#818cf8; border-radius:4px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer;">
+                🔄 Sync to CRM
+              </button>
+            </div>
+            <div class="email-box">
+              <div class="email-header-meta">
+                <div class="email-field-row">
+                  <span class="email-field-label">To:</span>
+                  <span id="emToVal" style="color:var(--text-main); font-weight:600;">info@business.com</span>
+                </div>
+                <div class="email-field-row">
+                  <span class="email-field-label">Subject:</span>
+                  <span class="email-subject-val" id="emSubjectVal">Subject line</span>
+                  <button class="btn-secondary" style="padding:3px 8px; font-size:11px;" onclick="copySubject()">Copy</button>
+                </div>
+              </div>
+
+              <!-- View / Edit Toggle -->
+              <div style="padding:8px 16px; background:var(--bg-primary); border-bottom:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+                <span id="emGenBy" style="font-size:11px; color:var(--text-dim);">generated by template</span>
+                <button class="btn-secondary" style="font-size:11px; padding:3px 8px;" id="btnToggleEditPitch" onclick="toggleEditPitch()">
+                  ✏️ Edit Pitch
+                </button>
+              </div>
+
+              <div class="email-body-content" id="emBodyVal"></div>
+              <div class="hidden" id="emEditWrap" style="padding:16px;">
+                <textarea id="emEditTextarea" class="email-edit-textarea"></textarea>
+                <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+                  <button class="btn-secondary" onclick="toggleEditPitch()">Cancel</button>
+                  <button class="btn-primary" onclick="saveEditedPitch()">Save Changes</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Compliance Guarantee -->
+            <div class="email-compliance-notice">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent-emerald); flex-shrink:0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <div>
+                <strong style="color:var(--text-main);">Anti-Spam & Ethics Guarantee:</strong>
+                Includes clear opt-out declaration, zero sequence spamming, and terminal 1-message-per-business state machine lock.
+              </div>
+            </div>
+
+            <!-- Multi-Channel Outreach Options -->
+            <div id="callScriptWrap" class="hidden" style="margin-top:16px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong style="color:var(--text-main); font-size:13px;">📞 30-Second Phone Script (Direct Outreach)</strong>
+                <button class="btn-secondary" style="font-size:11px; padding:2px 8px;" onclick="copyCallScript()">Copy Script</button>
+              </div>
+              <pre id="callScriptVal" style="white-space:pre-wrap; font-family:var(--font-mono); font-size:12px; color:var(--text-muted); margin:0; line-height:1.5;"></pre>
+            </div>
+
+            <div style="margin-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <span id="sendOutcomeNote" style="font-size:12px; color:var(--text-dim);"></span>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <a id="btnWhatsAppPitch" class="btn-primary hidden" target="_blank" style="background:#25D366; color:#fff; text-decoration:none; display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+                  <span>💬 WhatsApp (Click-to-Chat)</span>
+                </a>
+                <button id="btnSendPitch" class="btn-primary" onclick="triggerStep('send')" style="background:linear-gradient(135deg, #10b981 0%, #047857 100%);">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  <span>Send Pitch (Deliver / Log)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Raw Audit JSON Pane -->
+      <div class="studio-pane hidden" id="pane-audit">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <span style="font-size:12px; font-weight:700; color:var(--text-muted);">Inspection of Crawled Pages & Probes:</span>
+          <button class="btn-secondary" style="font-size:12px;" onclick="copyRawAudit()">Copy JSON</button>
+        </div>
+        <div id="pagesProbedList" style="margin-bottom:16px;"></div>
+        <pre class="code-json" id="rawAuditPre">// No audit run yet</pre>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+/* ==========================================================================
+   MarketPilot AI — Interactive Dashboard Application
+   ========================================================================== */
+
+let LEADS = [];
+let FILTERED_LEADS = [];
+let SELECTED_LEAD_ID = null;
+let CONFIG = null;
+let CURRENT_TAB = 'evidence';
+let CURRENT_FILTER = 'ALL';
+let CURRENT_VIEW = 'table';
+let SEARCH_QUERY = '';
+let IS_EDITING_PITCH = false;
+
+// DOM helpers
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+
+/* ---------------- Toast Notification System ---------------- */
+function showToast(msg, kind = 'info', duration = 3800) {
+  const container = $('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${kind}`;
+
+  const iconMap = {
+    ok: '✓',
+    warn: '⚠️',
+    err: '✕',
+    info: 'ℹ️'
+  };
+
+  toast.innerHTML = `
+    <span style="font-weight:700; font-size:14px;">${iconMap[kind] || '•'}</span>
+    <div style="flex:1;">${esc(msg)}</div>
+  `;
+
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 320);
+  }, duration);
+}
+
+/* ---------------- API Wrapper ---------------- */
+async function fetchApi(path, options = {}) {
+  const opts = {
+    headers: { 'Content-Type': 'application/json' },
+    ...options
+  };
+  try {
+    const res = await fetch(path, opts);
+    let data = {};
+    try { data = await res.json(); } catch(e) {}
+    if (!res.ok) {
+      const errMessage = data.detail || data.error || `${res.status} ${res.statusText}`;
+      throw new Error(errMessage);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+/* ---------------- Theme Toggle ---------------- */
+function toggleTheme() {
+  const body = document.body;
+  const current = body.getAttribute('data-theme') || 'dark';
+  const target = current === 'dark' ? 'light' : 'dark';
+  body.setAttribute('data-theme', target);
+  localStorage.setItem('mp_theme', target);
+}
+
+/* ---------------- Initialization ---------------- */
+async function initApp() {
+  const savedTheme = localStorage.getItem('mp_theme');
+  if (savedTheme) {
+    document.body.setAttribute('data-theme', savedTheme);
+  }
+
+  try {
+    await loadConfig();
+  } catch (err) {
+    showToast('Failed to load system config: ' + err.message, 'err');
+  }
+
+  try {
+    await loadLeads();
+  } catch (err) {
+    showToast('Failed to load leads repository: ' + err.message, 'err');
+  }
+}
+
+/* ---------------- Config Loader ---------------- */
+async function loadConfig() {
+  CONFIG = await fetchApi('/api/config');
+  $('telDiscovery').textContent = `${CONFIG.discovery_backend.toUpperCase()} (Live)`;
+  $('telModel').textContent = CONFIG.llm_provider === 'none' 
+    ? 'Deterministic Template' 
+    : `${CONFIG.llm.provider} (${CONFIG.llm.model})`;
+  $('telEmail').textContent = CONFIG.real_email_send 
+    ? 'SMTP (Live Destination)' 
+    : 'Honest Log-Only (outbox.log)';
+  // Inbox and opt-out registry: shown honestly, including when unset.
+  const inbox = $('telInbox');
+  if (inbox) {
+    inbox.textContent = CONFIG.imap_configured
+      ? `IMAP (${CONFIG.last_poll ? 'polled ' + (CONFIG.last_poll.at || '').slice(11,19) : 'Active · Standby'})`
+      : 'not configured';
+  }
+  const backends = CONFIG.discovery || {};
+  const active = backends[CONFIG.discovery_backend];
+  if (active && active.hint) $('telDiscovery').title = active.hint;
+
+  renderKpiCounts(CONFIG.counts || {});
+}
+
+/* ---------------- Reply polling ---------------- */
+async function checkReplies() {
+  showToast('Polling the inbox once...', 'info');
+  try {
+    const res = await fetchApi('/api/replies/poll', { method: 'POST' });
+    const n = (res.processed || []).length;
+    if (!n) {
+      showToast('No unread replies. Last poll recorded.', 'ok');
+    } else {
+      const kinds = (res.processed || [])
+        .map(p => p && p.classification).filter(Boolean).join(', ') || 'unknown';
+      showToast(`${n} reply(ies) processed: ${kinds}`, 'ok');
+      // An opt-out changes who may be contacted, so the list must refresh.
+      await loadConfig();
+      await loadLeads();
+    }
+  } catch (e) {
+    showToast(e.message || 'IMAP is not configured - set IMAP_USER / IMAP_PASSWORD', 'warn');
+  }
+}
+
+/* ---------------- Leads Loader ---------------- */
+async function loadLeads() {
+  const res = await fetchApi('/api/leads');
+  LEADS = res.leads || [];
+  renderKpiCounts(res.counts || {});
+  applyFiltersAndSearch();
+
+  // If a lead was selected, refresh its active details
+  if (SELECTED_LEAD_ID) {
+    const fresh = LEADS.find(l => l.id === SELECTED_LEAD_ID);
+    if (fresh) {
+      renderLeadDetail(fresh);
+    }
+  } else if (LEADS.length > 0) {
+    // Select first lead with a website by default
+    const firstWithWeb = LEADS.find(l => l.website) || LEADS[0];
+    selectLead(firstWithWeb.id, false);
+  }
+}
+
+/* ---------------- KPI & Counts ---------------- */
+function renderKpiCounts(counts) {
+  $('kpiValTotal').textContent = LEADS.length;
+  $('kpiValAudited').textContent = (counts.AUDITED || 0) + (counts.NO_GAP || 0);
+  $('kpiValDemos').textContent = (counts.DEMO_GENERATED || 0);
+  $('kpiValDrafts').textContent = (counts.DRAFTED || 0);
+  $('kpiValSent').textContent = (counts.SENT || 0);
+
+  $('fltCntAll').textContent = LEADS.length;
+}
+
+/* ---------------- Presets & Search ---------------- */
+function applyPreset(bt, city) {
+  $('bt').value = bt;
+  $('city').value = city;
+  doSearch();
+}
+
+async function doSearch() {
+  const service = $('svc').value.trim().replace(/\s+/g, ' ');
+  const bt = $('bt').value.trim();
+  const city = $('city').value.trim();
+
+  if (service.length < 2) {
+    showToast('Tell us what service you offer - it is what the outreach email leads with.', 'warn');
+    $('svc').focus();
+    return;
+  }
+  if (service.length > 120) {
+    showToast('Keep the service description under 120 characters.', 'warn');
+    return;
+  }
+  if (bt.length < 2 || city.length < 2) {
+    showToast('Please provide both a business type and an area.', 'warn');
+    return;
+  }
+
+  const btn = $('go');
+  const btnIcon = $('goIcon');
+  const btnText = $('goText');
+  const msgEl = $('searchMsg');
+
+  btn.disabled = true;
+  btnIcon.innerHTML = '<span class="spinner"></span>';
+  btnText.textContent = 'Hunting real leads...';
+  msgEl.innerHTML = `<span class="spinner" style="width:12px; height:12px;"></span> Querying ${CONFIG ? CONFIG.discovery_backend : 'OSM'} endpoint in real-time...`;
+
+  try {
+    const res = await fetchApi('/api/search', {
+      method: 'POST',
+      body: JSON.stringify({ service: service, business_type: bt, city: city })
+    });
+
+    let msg = `Discovered ${res.count} live businesses via ${res.backend}.`;
+    if (res.errors && res.errors.length) {
+      msg += ` Notes: ${res.errors.join('; ')}`;
+    }
+    msgEl.textContent = msg;
+
+    showToast(`Discovered ${res.count} real businesses in ${city} for "${service}"!`, 'ok');
+
+    await loadLeads();
+
+    if (res.leads && res.leads.length > 0) {
+      selectLead(res.leads[0].id, true);
+    }
+  } catch (err) {
+    showToast(err.message, 'err');
+    msgEl.textContent = 'Search failed: ' + err.message;
+  } finally {
+    btn.disabled = false;
+    btnIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>';
+    btnText.textContent = 'Discover Real Leads';
+  }
+}
+
+/* ---------------- Filter & View Modes ---------------- */
+function setFilter(status) {
+  CURRENT_FILTER = status;
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `flt-${status}`);
+  });
+
+  document.querySelectorAll('.kpi-card').forEach(card => card.classList.remove('active-filter'));
+  const kpiMap = {
+    ALL: 'kpi-all',
+    AUDITED: 'kpi-audited',
+    DEMO_GENERATED: 'kpi-demos',
+    DRAFTED: 'kpi-drafts',
+    SENT: 'kpi-sent'
+  };
+  if (kpiMap[status]) $(kpiMap[status])?.classList.add('active-filter');
+
+  applyFiltersAndSearch();
+}
+
+function handleTextFilter(text) {
+  SEARCH_QUERY = (text || '').toLowerCase().trim();
+  applyFiltersAndSearch();
+}
+
+function applyFiltersAndSearch() {
+  FILTERED_LEADS = LEADS.filter(lead => {
+    // Status Filter
+    if (CURRENT_FILTER !== 'ALL') {
+      if (CURRENT_FILTER === 'AUDITED') {
+        if (lead.status !== 'AUDITED' && lead.status !== 'NO_GAP') return false;
+      } else if (lead.status !== CURRENT_FILTER) {
+        return false;
+      }
+    }
+
+    // Text Filter
+    if (SEARCH_QUERY) {
+      const matchName = (lead.name || '').toLowerCase().includes(SEARCH_QUERY);
+      const matchWeb = (lead.website || '').toLowerCase().includes(SEARCH_QUERY);
+      const matchAddr = (lead.address || '').toLowerCase().includes(SEARCH_QUERY);
+      const matchPhone = (lead.phone || '').toLowerCase().includes(SEARCH_QUERY);
+      return matchName || matchWeb || matchAddr || matchPhone;
+    }
+
+    return true;
+  });
+
+  renderLeadsList();
+}
+
+function setViewMode(mode) {
+  CURRENT_VIEW = mode;
+  $('btnViewTable').classList.toggle('active', mode === 'table');
+  $('btnViewGrid').classList.toggle('active', mode === 'grid');
+
+  $('tableViewContainer').classList.toggle('hidden', mode !== 'table');
+  $('gridViewContainer').classList.toggle('hidden', mode !== 'grid');
+
+  renderLeadsList();
+}
+
+/* ---------------- Rendering Leads List ---------------- */
+function renderLeadsList() {
+  if (CURRENT_VIEW === 'table') {
+    renderTableView();
+  } else {
+    renderGridView();
+  }
+}
+
+function getNextAction(lead) {
+  switch (lead.status) {
+    case 'DISCOVERED':
+      return lead.website ? { label: 'Audit Site', act: 'audit', cls: 'btn-secondary' } : { label: 'No Website', act: 'none', cls: 'btn-secondary' };
+    case 'AUDITED':
+    case 'NO_GAP':
+      return { label: 'Build Demo', act: 'demo', cls: 'btn-accent' };
+    case 'DEMO_GENERATED':
+      return { label: 'Draft Pitch', act: 'draft', cls: 'btn-accent' };
+    case 'DRAFTED':
+      return { label: 'Send Pitch', act: 'send', cls: 'btn-accent' };
+    case 'SENT':
+      return { label: 'Sent ✓', act: 'none', cls: 'btn-secondary' };
+    case 'FAILED':
+      return lead.website ? { label: 'Retry Audit', act: 'audit', cls: 'btn-danger' } : { label: 'Failed', act: 'none', cls: 'btn-danger' };
+    case 'NO_WEBSITE':
+      return { label: 'No Website', act: 'none', cls: 'btn-secondary' };
+    default:
+      return { label: 'View', act: 'none', cls: 'btn-secondary' };
+  }
+}
+
+function renderTableView() {
+  const tbody = $('leadTableBody');
+  if (!FILTERED_LEADS.length) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align:center; padding:36px; color:var(--text-dim);">
+          No leads match the current filters.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = FILTERED_LEADS.map(lead => {
+    const isSelected = lead.id === SELECTED_LEAD_ID;
+    const action = getNextAction(lead);
+
+    const actionBtn = action.act === 'none'
+      ? `<span style="font-size:12px; color:var(--text-dim);">${esc(action.label)}</span>`
+      : `<button class="${action.cls}" style="padding:4px 10px; font-size:11.5px;" onclick="event.stopPropagation(); triggerStep('${action.act}', ${lead.id})">${esc(action.label)}</button>`;
+
+    return `
+      <tr class="${isSelected ? 'selected-row' : ''}" onclick="selectLead(${lead.id})">
+        <td>
+          <strong style="color:var(--text-main); font-size:14px;">${esc(lead.name)}</strong>
+          <div style="font-size:11.5px; color:var(--text-dim); margin-top:2px;" class="truncate">${esc(lead.address || 'Address unlisted')}</div>
+        </td>
+        <td>
+          ${lead.website ? `
+            <a href="${esc(lead.website)}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:4px; font-size:12px;" onclick="event.stopPropagation()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              ${esc(lead.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}
+            </a>
+          ` : '<span style="color:var(--text-dim); font-size:12px;">none</span>'}
+        </td>
+        <td style="font-size:12px; color:var(--text-muted); font-family:var(--font-mono);">${esc(lead.phone || '—')}</td>
+        <td>
+          <span class="badge-status st-${lead.status}">${lead.status}</span>
+          ${lead.status_reason ? `<div style="font-size:11px; color:var(--text-dim); margin-top:2px;" class="truncate">${esc(lead.status_reason)}</div>` : ''}
+        </td>
+        <td>${actionBtn}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderGridView() {
+  const container = $('gridViewContainer');
+  if (!FILTERED_LEADS.length) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:36px; color:var(--text-dim);">
+        No leads match the current filters.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = FILTERED_LEADS.map(lead => {
+    const isSelected = lead.id === SELECTED_LEAD_ID;
+    const action = getNextAction(lead);
+
+    return `
+      <div class="lead-grid-item ${isSelected ? 'selected-card' : ''}" onclick="selectLead(${lead.id})">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+            <strong style="font-size:15px; color:var(--text-main);">${esc(lead.name)}</strong>
+            <span class="badge-status st-${lead.status}">${lead.status}</span>
+          </div>
+
+          <div style="font-size:12px; color:var(--text-dim); margin-bottom:8px;">
+            ${esc(lead.address || 'Address unlisted')}
+          </div>
+
+          ${lead.website ? `
+            <div style="font-size:12px; margin-bottom:6px;">
+              <a href="${esc(lead.website)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                🌐 ${esc(lead.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}
+              </a>
+            </div>
+          ` : '<div style="font-size:12px; color:var(--text-dim); margin-bottom:6px;">🌐 No website</div>'}
+
+          ${lead.phone ? `
+            <div style="font-size:12px; color:var(--text-muted); font-family:var(--font-mono); margin-bottom:12px;">
+              📞 ${esc(lead.phone)}
+            </div>
+          ` : ''}
+        </div>
+
+        <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; color:var(--text-dim);">${esc(lead.source || 'OSM')}</span>
+          ${action.act !== 'none' ? `
+            <button class="${action.cls}" style="padding:4px 10px; font-size:11.5px;" onclick="event.stopPropagation(); triggerStep('${action.act}', ${lead.id})">
+              ${esc(action.label)}
+            </button>
+          ` : `<span style="font-size:11px; color:var(--text-dim);">${esc(action.label)}</span>`}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ---------------- Lead Selection & Workspace Split ---------------- */
+function selectLead(leadId, shouldScroll = false) {
+  SELECTED_LEAD_ID = leadId;
+  const lead = LEADS.find(l => l.id === leadId);
+  if (!lead) return;
+
+  renderLeadsList();
+
+  const studio = $('studioContainer');
+  const banner = $('pipelineBanner');
+  const grid = $('workspaceGrid');
+
+  studio.classList.remove('hidden');
+  banner.classList.remove('hidden');
+  grid.classList.add('with-detail');
+
+  renderPipelineBanner(lead);
+  renderLeadDetail(lead);
+
+  if (shouldScroll) {
+    banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+/* ---------------- Pipeline Stepper Render ---------------- */
+function renderPipelineBanner(lead) {
+  $('plName').textContent = lead.name;
+  $('plAvatar').textContent = lead.name.charAt(0).toUpperCase();
+
+  const badge = $('plStatusBadge');
+  badge.className = `badge-status st-${lead.status}`;
+  badge.textContent = lead.status;
+
+  $('plMeta').innerHTML = [
+    lead.city || 'Local area',
+    lead.website ? `<a href="${esc(lead.website)}" target="_blank">${esc(lead.website.replace(/^https?:\/\//,''))}</a>` : 'No website',
+    lead.phone || 'No phone'
+  ].join(' &middot; ');
+
+  // Update 6 Step Nodes
+  const statusRanks = {
+    'DISCOVERED': 1,
+    'AUDITED': 2,
+    'NO_GAP': 2,
+    'DEMO_GENERATED': 4,
+    'DRAFTED': 5,
+    'SENT': 6,
+    'REPLIED': 6,
+    'INTERESTED': 6,
+    'NEEDS_HUMAN': 6,
+    'OPTED_OUT': 6,
+    'FAILED': 1,
+    'NO_WEBSITE': 1
+  };
+
+  const rank = statusRanks[lead.status] || 1;
+
+  for (let i = 1; i <= 6; i++) {
+    const node = $(`step-node-${i}`);
+    if (!node) continue;
+    node.className = 'step-node';
+    const icon = node.querySelector('.step-icon');
+
+    if (i < rank || (i === 3 && rank >= 2 && lead.evidence && lead.evidence.length > 0)) {
+      node.classList.add('completed');
+      if (icon) icon.textContent = '✓';
+    } else if (i === rank) {
+      node.classList.add('current');
+      if (icon) icon.textContent = '●';
+    } else {
+      if (icon) icon.textContent = '○';
+    }
+  }
+
+  // Disable Autopilot button if already sent or opted out
+  const apBtn = $('btnAutopilot');
+  if (lead.status === 'SENT' || lead.status === 'OPTED_OUT') {
+    apBtn.disabled = true;
+  } else {
+    apBtn.disabled = false;
+  }
+}
+
+/* ---------------- Render Lead Detail Studio ---------------- */
+function renderLeadDetail(lead) {
+  $('stLeadName').textContent = lead.name;
+
+  $('stMetaChips').innerHTML = `
+    <span class="studio-chip">📍 ${esc(lead.address || lead.city || 'Area listed')}</span>
+    ${lead.website ? `<span class="studio-chip">🌐 <a href="${esc(lead.website)}" target="_blank">${esc(lead.website.replace(/^https?:\/\//,''))}</a></span>` : '<span class="studio-chip" style="color:var(--accent-amber); font-weight:700;">🌐 Zero Website (High-Value Lead)</span>'}
+    ${lead.phone ? `<span class="studio-chip">📞 ${esc(lead.phone)}</span>` : ''}
+    <span class="studio-chip">Source: <strong>${esc(lead.source)}</strong></span>
+    ${lead.service ? `<span class="studio-chip">🛠 ${esc(lead.service)}</span>` : ''}
+  `;
+
+  // Quick action buttons in header
+  const actionsWrap = $('stQuickActions');
+  const acts = [];
+  if (lead.status === 'DISCOVERED' || lead.status === 'FAILED') {
+    acts.push(`<button class="btn-primary" style="font-size:12px; padding:6px 12px;" onclick="triggerStep('audit', ${lead.id})">🔍 ${lead.website ? 'Audit Site' : 'Audit Presence'}</button>`);
+  }
+  if (lead.status === 'AUDITED' || lead.status === 'NO_GAP') {
+    acts.push(`<button class="btn-primary" style="font-size:12px; padding:6px 12px;" onclick="triggerStep('demo', ${lead.id})">⚡ Build Demo</button>`);
+  }
+  if (lead.status === 'DEMO_GENERATED') {
+    acts.push(`<button class="btn-primary" style="font-size:12px; padding:6px 12px;" onclick="triggerStep('draft', ${lead.id})">✉️ Draft Pitch</button>`);
+  }
+  if (lead.status === 'DRAFTED') {
+    acts.push(`<button class="btn-accent" style="font-size:12px; padding:6px 12px;" onclick="triggerStep('send', ${lead.id})">🚀 Send Pitch</button>`);
+  }
+  actionsWrap.innerHTML = acts.join('');
+
+  // 1. Evidence Tab Content
+  const cards = lead.evidence || [];
+  $('evCount').textContent = cards.length;
+  const evContainer = $('evidenceListContainer');
+
+  if (!cards.length) {
+    evContainer.innerHTML = `
+      <div style="text-align:center; padding:60px 20px; color:var(--text-dim);">
+        <div style="font-size:32px; margin-bottom:10px;">🔍</div>
+        <h4 style="color:var(--text-main); font-size:15px; margin-bottom:4px;">No Evidence Cards Yet</h4>
+        <p style="font-size:13px; max-width:380px; margin:0 auto 16px;">
+          Run the deep website audit. Our crawler probes candidate pages and validates specific gaps (booking, contact, WhatsApp chat, viewport).
+        </p>
+        ${lead.website ? `<button class="btn-primary" onclick="triggerStep('audit', ${lead.id})">Audit ${esc(lead.name)}</button>` : '<span style="color:var(--accent-rose)">Cannot audit without a website URL.</span>'}
+      </div>
+    `;
+  } else {
+    evContainer.innerHTML = cards.map(c => `
+      <div class="evidence-card gap-${c.gap || 'booking'}">
+        <div class="ev-header">
+          <div class="ev-title">
+            <span>🛡️ ${esc(c.title)}</span>
+          </div>
+          <span class="ev-conf ${c.confidence || 'medium'}">${esc(c.confidence)} confidence</span>
+          ${typeof c.score === 'number' ? `<span class="ev-conf" style="background:var(--bg-panel);color:var(--text-main);border:1px solid var(--border);" title="revenue impact, effort, evidence strength and service fit">score ${c.score}/100</span>` : ''}
+        </div>
+        <div class="ev-obs">${esc(c.observation)}</div>
+        ${c.why_it_fits ? `<div class="ev-why" style="border-left:3px solid var(--accent, #4f9cff);"><strong>Why it fits:</strong> ${esc(c.why_it_fits)}</div>` : ''}
+        ${c.creative_concept ? `<div class="ev-why" style="border-left:3px solid #10b981; background:rgba(16,185,129,0.07);"><strong>Creative Concept:</strong> ${esc(c.creative_concept)}</div>` : ''}
+        <div class="ev-why">
+          <strong>Commercial Impact:</strong> ${esc(c.why_it_matters)}
+        </div>
+        <div class="ev-meta-row">
+          <span>Source: <a href="${esc(c.source_url)}" target="_blank" rel="noopener">${esc(c.source_url)}</a></span>
+          <span>&bull;</span>
+          <span>Retrieved: ${esc(c.retrieved_at)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // 2. Demo Tab Content
+  const iframe = $('demoIframe');
+  const demoEmpty = $('demoEmptyState');
+  const demoActions = $('demoActionsRow');
+
+  if (lead.demo_slug) {
+    demoEmpty.classList.add('hidden');
+    iframe.classList.remove('hidden');
+    iframe.src = `/demo/${esc(lead.demo_slug)}`;
+
+    demoActions.innerHTML = `
+      <a href="/demo/${esc(lead.demo_slug)}" target="_blank" class="btn-secondary" style="font-size:11px; padding:4px 8px;">
+        ↗ Open Standalone
+      </a>
+      <button class="btn-secondary" style="font-size:11px; padding:4px 8px;" onclick="triggerStep('demo', ${lead.id})">
+        ↻ Regenerate
+      </button>
+    `;
+  } else {
+    iframe.classList.add('hidden');
+    demoEmpty.classList.remove('hidden');
+    demoActions.innerHTML = '';
+  }
+
+  // 3. Email Pitch Tab Content
+  const emailDraft = lead.email_draft;
+  const emailEmpty = $('emailEmptyState');
+  const emailBox = $('emailBoxWrap');
+
+  if (emailDraft) {
+    emailEmpty.classList.add('hidden');
+    emailBox.classList.remove('hidden');
+
+    const recipientAddr = lead.email;
+    $('emToVal').innerHTML = recipientAddr
+      ? `<span style="font-weight:600; color:var(--text-main);">${esc(recipientAddr)}</span> <span style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3); border-radius:4px; font-size:10px; padding:1px 6px; font-weight:700; margin-left:6px;">DIRECT CUSTOMER</span> <button onclick="editLeadEmail()" class="btn-xs" style="background:rgba(14,165,233,0.15); border:1px solid rgba(14,165,233,0.3); color:var(--brand-accent); border-radius:4px; padding:2px 8px; font-size:11px; cursor:pointer; margin-left:8px;">✎ Change</button>`
+      : `<span style="color:#f59e0b; font-weight:600;">⚠️ No customer email found</span> <button onclick="editLeadEmail()" class="btn-xs" style="background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.4); color:#10b981; border-radius:4px; padding:3px 10px; font-size:12px; font-weight:700; cursor:pointer; margin-left:8px;">+ Add Customer Email</button>`;
+    $('emSubjectVal').textContent = emailDraft.subject;
+    $('emBodyVal').textContent = emailDraft.body;
+    $('emGenBy').textContent = `Generated by ${emailDraft.generated_by || 'template'}`;
+
+    const sendBtn = $('btnSendPitch');
+    if (lead.status === 'SENT') {
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Outreach Already Delivered ✓';
+      $('sendOutcomeNote').textContent = 'Terminal state reached: Only 1 message per business ever sent to protect reputation.';
+    } else {
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        <span>Send Pitch to Customer</span>
+      `;
+      $('sendOutcomeNote').textContent = lead.email
+        ? `Live delivery direct to customer at ${lead.email} via SMTP.`
+        : '⚠️ No customer email set: click "+ Add Customer Email" above to deliver direct to the business.';
+    }
+    // Multi-channel options
+    const waBtn = $('btnWhatsAppPitch');
+    if (emailDraft.whatsapp_url) {
+      waBtn.href = emailDraft.whatsapp_url;
+      waBtn.classList.remove('hidden');
+    } else {
+      waBtn.classList.add('hidden');
+    }
+    const scriptWrap = $('callScriptWrap');
+    if (emailDraft.call_script) {
+      $('callScriptVal').textContent = emailDraft.call_script;
+      scriptWrap.classList.remove('hidden');
+    } else {
+      scriptWrap.classList.add('hidden');
+    }
+  } else {
+    emailBox.classList.add('hidden');
+    emailEmpty.classList.remove('hidden');
+  }
+
+function copyCallScript() {
+  const text = $('callScriptVal').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text);
+  showToast('Phone script copied to clipboard!', 'ok');
+}
+
+  // 4. Raw Audit Tab Content
+  const audit = lead.audit;
+  $('rawAuditPre').textContent = audit ? JSON.stringify(audit, null, 2) : '// No audit executed for this lead yet.';
+
+  const pagesContainer = $('pagesProbedList');
+  if (audit && audit.pages_probed && audit.pages_probed.length > 0) {
+    pagesContainer.innerHTML = `
+      <div style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:8px;">Probed Candidate URLs:</div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        ${audit.pages_probed.map(p => `
+          <div style="display:flex; align-items:center; justify-content:space-between; font-size:12px; background:var(--bg-primary); padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+            <span style="font-family:var(--font-mono); color:var(--text-main);">${esc(p.url)}</span>
+            <span style="font-weight:700; color:${p.status === 200 ? 'var(--accent-emerald)' : 'var(--text-dim)'};">${p.status || 'ERR'}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    pagesContainer.innerHTML = '';
+  }
+}
+
+/* ---------------- Studio Tab Switching ---------------- */
+function switchStudioTab(tab) {
+  CURRENT_TAB = tab;
+
+  document.querySelectorAll('.studio-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `tab-btn-${tab}`);
+  });
+
+  document.querySelectorAll('.studio-pane').forEach(pane => {
+    pane.classList.toggle('hidden', pane.id !== `pane-${tab}`);
+  });
+}
+
+/* ---------------- Device Viewport Switcher ---------------- */
+function setDeviceViewport(width, btn) {
+  $('demoIframe').style.width = width;
+  document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ---------------- Step Execution Pipeline ---------------- */
+async function triggerStep(kind, leadId = null) {
+  const id = leadId || SELECTED_LEAD_ID;
+  if (!id) return;
+
+  const lead = LEADS.find(l => l.id === id);
+  if (!lead) return;
+
+  try {
+    if (kind === 'audit') {
+      showToast(`Initiating deep audit of ${lead.name}...`, 'info');
+      const res = await fetchApi(`/api/audit/${id}`, { method: 'POST' });
+      showToast(`Audit complete for ${lead.name}! Found ${res.audit.gaps.length} potential improvements.`, 'ok');
+      await loadLeads();
+      selectLead(id);
+      switchStudioTab('evidence');
+    }
+    else if (kind === 'demo') {
+      showToast(`Generating custom mini-demo for ${lead.name}...`, 'info');
+      const res = await fetchApi(`/api/demo/${id}`, { method: 'POST' });
+      showToast(`Mini-demo ready! Slug: ${res.slug}`, 'ok');
+      await loadLeads();
+      selectLead(id);
+      switchStudioTab('demo');
+    }
+    else if (kind === 'draft') {
+      showToast(`Drafting tailored outreach email for ${lead.name}...`, 'info');
+      const res = await fetchApi(`/api/draft/${id}`, { method: 'POST' });
+      showToast(`Email drafted and verified!`, 'ok');
+      await loadLeads();
+      selectLead(id);
+      switchStudioTab('email');
+    }
+    else if (kind === 'send') {
+      if (!lead.email) {
+        const promptMsg = `"${lead.name}" does not have a customer email address listed.\n\nEnter the customer's email address to deliver outreach directly:`;
+        const entered = prompt(promptMsg);
+        if (!entered || !entered.trim()) {
+          showToast('Delivery paused: Enter the customer email to send directly.', 'warn');
+          return;
+        }
+        await fetchApi(`/api/lead/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ email: entered.trim() })
+        });
+        lead.email = entered.trim();
+        await loadLeads();
+      }
+      showToast(`Delivering outreach to ${lead.email}...`, 'info');
+      const res = await fetchApi(`/api/send/${id}`, { method: 'POST' });
+      if (res.outcome.mode === 'sent') {
+        showToast(`Delivered live over SMTP to ${res.outcome.to}! Logged in outbox.log.`, 'ok', 6000);
+      } else {
+        showToast(`Logged outreach to outbox.log (Honest mock-free test).`, 'ok', 5000);
+      }
+      await loadLeads();
+      selectLead(id);
+      switchStudioTab('email');
+    }
+  } catch (err) {
+    showToast(`Error: ${err.message}`, 'err', 5000);
+    await loadLeads();
+  }
+}
+
+/* ---------------- Autopilot Sequence ---------------- */
+async function runAutopilot() {
+  if (!SELECTED_LEAD_ID) return;
+  const lead = LEADS.find(l => l.id === SELECTED_LEAD_ID);
+  if (!lead || !lead.website) {
+    showToast('Cannot run autopilot without a website URL.', 'warn');
+    return;
+  }
+
+  const apBtn = $('btnAutopilot');
+  apBtn.disabled = true;
+  apBtn.innerHTML = '<span class="spinner"></span> <span>Running Autopilot...</span>';
+
+  try {
+    // Step 1: Audit (if not audited yet)
+    if (lead.status === 'DISCOVERED' || lead.status === 'FAILED') {
+      showToast('Autopilot Step 1/3: Auditing website in real-time...', 'info');
+      await fetchApi(`/api/audit/${lead.id}`, { method: 'POST' });
+      await loadLeads();
+    }
+
+    // Step 2: Demo
+    showToast('Autopilot Step 2/3: Synthesizing interactive mini-demo...', 'info');
+    await fetchApi(`/api/demo/${lead.id}`, { method: 'POST' });
+    await loadLeads();
+
+    // Step 3: Pitch Draft
+    showToast('Autopilot Step 3/3: Drafting evidence-based pitch...', 'info');
+    await fetchApi(`/api/draft/${lead.id}`, { method: 'POST' });
+    await loadLeads();
+
+    showToast(`Autopilot finished! Interactive demo and customized pitch are ready for ${lead.name}.`, 'ok', 5000);
+    selectLead(lead.id);
+    switchStudioTab('demo');
+  } catch (err) {
+    showToast(`Autopilot halted: ${err.message}`, 'err', 6000);
+    await loadLeads();
+    selectLead(lead.id);
+  } finally {
+    apBtn.disabled = false;
+    apBtn.innerHTML = `
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      <span>⚡ Run Full Autopilot</span>
+    `;
+  }
+}
+
+/* ---------------- Reset Lead ---------------- */
+async function resetSelectedLead() {
+  if (!SELECTED_LEAD_ID) return;
+  if (!confirm('Reset this lead back to DISCOVERED state? This clears the audit, demo, and draft so you can re-run the pipeline fresh.')) {
+    return;
+  }
+
+  try {
+    await fetchApi(`/api/reset/${SELECTED_LEAD_ID}`, { method: 'POST' });
+    showToast('Lead reset to DISCOVERED state.', 'ok');
+    await loadLeads();
+    selectLead(SELECTED_LEAD_ID);
+    switchStudioTab('evidence');
+  } catch (err) {
+    showToast('Reset failed: ' + err.message, 'err');
+  }
+}
+
+/* ---------------- Email Pitch Editing ---------------- */
+function toggleEditPitch() {
+  IS_EDITING_PITCH = !IS_EDITING_PITCH;
+  const lead = LEADS.find(l => l.id === SELECTED_LEAD_ID);
+  if (!lead || !lead.email_draft) return;
+
+  const bodyEl = $('emBodyVal');
+  const editWrap = $('emEditWrap');
+  const editArea = $('emEditTextarea');
+  const btn = $('btnToggleEditPitch');
+
+  if (IS_EDITING_PITCH) {
+    editArea.value = lead.email_draft.body;
+    bodyEl.classList.add('hidden');
+    editWrap.classList.remove('hidden');
+    btn.textContent = '✕ Cancel Edit';
+  } else {
+    bodyEl.classList.remove('hidden');
+    editWrap.classList.add('hidden');
+    btn.textContent = '✏️ Edit Pitch';
+  }
+}
+
+async function saveEditedPitch() {
+  const lead = LEADS.find(l => l.id === SELECTED_LEAD_ID);
+  if (!lead || !lead.email_draft) return;
+
+  const newBody = $('emEditTextarea').value.trim();
+  if (!newBody) {
+    showToast('Pitch body cannot be empty.', 'warn');
+    return;
+  }
+
+  try {
+    await fetchApi(`/api/draft/${lead.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        subject: lead.email_draft.subject,
+        body: newBody
+      })
+    });
+    showToast('Pitch saved!', 'ok');
+    IS_EDITING_PITCH = false;
+    await loadLeads();
+    selectLead(lead.id);
+  } catch (err) {
+    showToast('Failed to save pitch: ' + err.message, 'err');
+  }
+}
+
+async function editLeadEmail() {
+  const lead = LEADS.find(l => l.id === SELECTED_LEAD_ID);
+  if (!lead) return;
+  const current = lead.email || '';
+  const newEmail = prompt(`Set direct recipient email for "${lead.name}":`, current);
+  if (newEmail === null) return;
+  const cleaned = newEmail.trim();
+  try {
+    await fetchApi(`/api/lead/${lead.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ email: cleaned })
+    });
+    showToast(`Recipient email updated to: ${cleaned || 'test fallback'}`, 'ok');
+    await loadLeads();
+    selectLead(lead.id);
+  } catch (err) {
+    showToast('Failed to update email: ' + err.message, 'err');
+  }
+}
+
+async function changeOutreachLanguage() {
+  if (!SELECTED_LEAD_ID) return;
+  const lang = $('selOutreachLang').value;
+  showToast('Regenerating outreach in selected dialect...', 'info');
+  try {
+    await fetchApi(`/api/draft/${SELECTED_LEAD_ID}`, {
+      method: 'POST',
+      body: JSON.stringify({ language: lang })
+    });
+    showToast('Dialect pitch generated!', 'ok');
+    await loadLeads();
+    selectLead(SELECTED_LEAD_ID);
+    switchStudioTab('email');
+  } catch(e) {
+    showToast('Failed to regenerate pitch: ' + e.message, 'err');
+  }
+}
+
+async function syncToCRM() {
+  if (!SELECTED_LEAD_ID) return;
+  showToast('Synchronizing lead to CRM...', 'info');
+  try {
+    const res = await fetchApi(`/api/crm/sync/${SELECTED_LEAD_ID}`, { method: 'POST' });
+    showToast('Lead synced to CRM ledger successfully!', 'ok');
+    await loadLeads();
+    selectLead(SELECTED_LEAD_ID);
+  } catch(e) {
+    showToast('CRM sync failed: ' + e.message, 'err');
+  }
+}
+
+/* ---------------- Copy Utilities ---------------- */
+function copySubject() {
+  const text = $('emSubjectVal').textContent;
+  navigator.clipboard.writeText(text);
+  showToast('Subject line copied to clipboard!', 'ok');
+}
+
+function copyRawAudit() {
+  const text = $('rawAuditPre').textContent;
+  navigator.clipboard.writeText(text);
+  showToast('Audit JSON copied to clipboard!', 'ok');
+}
+
+/* ---------------- CSV Export ---------------- */
+function exportCSV() {
+  if (!LEADS.length) {
+    showToast('No leads available to export.', 'warn');
+    return;
+  }
+
+  const headers = ['ID', 'Name', 'Website', 'Phone', 'Address', 'City', 'Status', 'Gaps', 'Demo URL'];
+  const rows = LEADS.map(l => [
+    l.id,
+    `"${(l.name || '').replace(/"/g, '""')}"`,
+    l.website || '',
+    l.phone || '',
+    `"${(l.address || '').replace(/"/g, '""')}"`,
+    `"${(l.city || '').replace(/"/g, '""')}"`,
+    l.status,
+    `"${(l.audit && l.audit.gaps ? l.audit.gaps.join(';') : '')}"`,
+    l.demo_slug ? `http://localhost:8000/demo/${l.demo_slug}` : ''
+  ]);
+
+  const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `marketpilot_leads_${new Date().toISOString().slice(0,10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  showToast('Exported leads to CSV file!', 'ok');
+}
+
+// Kick off
+initApp();
+</script>
+</body>
+</html>
