@@ -1,0 +1,64 @@
+# MarketPilot runtime configuration.
+# Secrets are NEVER in this file - they come from .env.
+
+llm:
+  # LiteLLM model ids. Primary is tried first, fallback on provider error/rate limit.
+  primary: gemini/gemini-2.0-flash
+  fallback: groq/llama-3.3-70b-versatile
+  temperature: 0.2
+  max_tokens: 2400
+  # How many times to re-ask when the model output fails schema validation.
+  validation_retries: 2
+  timeout_seconds: 60
+
+discovery:
+  # google_places | osm  (osm is also the automatic fallback when no Places key is set)
+  provider: google_places
+  radius_m: 8000
+  max_results: 25
+  # Overpass/Nominatim user agent - required by OSM usage policy
+  osm_user_agent: "MarketPilot/1.0 (hackathon)"
+
+research:
+  # How many raw facts to keep per lead after LLM research.
+  max_facts: 12
+
+ideas:
+  max_ideas: 3
+  # Minimum number of independent source facts an idea must cite to be accepted.
+  min_citations: 2
+
+limits:
+  max_sends_per_day: 20
+  max_per_domain_per_day: 1
+  min_seconds_between_sends: 60
+  # A lead is emailed at most once, ever.
+  max_emails_per_lead: 1
+
+outreach:
+  from_name: MarketPilot
+  signature: "Sent by MarketPilot on behalf of a small team. Reply STOP to opt out."
+  subject_max_chars: 70
+  body_max_chars: 1200
+
+inbox:
+  # Days back to scan the IMAP INBOX for replies to our outreach.
+  match_window_days: 21
+  max_messages_per_poll: 50
+
+classify:
+  # Opt-out phrases are matched deterministically in Python, never by the model.
+  opt_out_phrases:
+    - stop
+    - unsubscribe
+    - remove me
+    - do not contact
+    - not interested
+    - no thanks
+
+telegram:
+  notify_on: [IDEA_VERIFIED, SENT, REPLY_RECEIVED, CLASSIFIED, SUPPRESSED, FAILED]
+
+server:
+  host: 0.0.0.0
+  port: 8000
