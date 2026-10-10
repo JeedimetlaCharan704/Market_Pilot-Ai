@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  marketpilot:
+    build: .
+    container_name: marketpilot
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DISCOVERY_BACKEND=osm
+      - LLM_PROVIDER=groq
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

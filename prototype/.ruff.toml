@@ -1,0 +1,30 @@
+# Ruff config lives here rather than in pyproject.toml on purpose: Vercel's
+# Python builder sees any pyproject.toml and runs `uv lock`, which requires a
+# [project] table. requirements.txt stays the single source of dependency truth.
+
+line-length = 110
+target-version = "py311"
+extend-exclude = [
+    ".venv",
+    "demos",
+    "__pycache__",
+    ".vercel",
+]
+
+[lint]
+# E4/E7/E9/F are ruff's default (syntax + undefined names + unused imports).
+# I   import sorting - keeps the module list readable during the live build.
+# B   bugbear - real bug patterns (mutable defaults, bare except, etc).
+# UP  pyupgrade - catches dead-version idioms.
+# RUF ruff's own correctness rules.
+select = ["E4", "E7", "E9", "F", "I", "B", "UP", "RUF"]
+ignore = [
+    "E501",   # prompt strings and regexes are deliberately long
+    "B008",   # FastAPI Depends()/Query() in defaults is the framework idiom
+    "RUF001", # ambiguous unicode in user-facing copy (em dashes, smart quotes)
+    "RUF002",
+    "RUF003",
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["B011"]

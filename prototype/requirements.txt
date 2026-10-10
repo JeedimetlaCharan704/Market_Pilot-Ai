@@ -1,0 +1,15 @@
+fastapi>=0.115,<1.0
+# Plain uvicorn: [standard] pulls uvloop/httptools, which are compiled and can
+# fail to build in a serverless wheelhouse.
+uvicorn>=0.30
+httpx>=0.27,<1.0
+beautifulsoup4>=4.12,<5.0
+jinja2>=3.1,<4.0
+python-dotenv>=1.0,<2.0
+# config.yaml. Without it every setting falls back to .env then to code, so the
+# app still boots - but the weights and providers you edited would be ignored.
+pyyaml>=6.0,<7.0
+# Optional transport for modules/llm.py. The module imports it lazily and falls
+# back to a direct HTTP path for every provider, so removing this line does not
+# disable anything - it only changes which transport answers.
+litellm>=1.50,<2.0

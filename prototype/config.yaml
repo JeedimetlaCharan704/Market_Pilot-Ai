@@ -1,0 +1,47 @@
+# MarketPilot runtime configuration.
+#
+# Secrets are NEVER in this file - they come from .env. Anything here is a
+# default, and a matching environment variable always wins, so the same file
+# works locally, on a laptop with no keys, and on a serverless host.
+#
+# Loaded by modules/settings.py. Delete this file and the app still starts:
+# every value below has a hard-coded fallback in code.
+
+# --- discovery ---------------------------------------------------------------
+discovery:
+  backend: osm            # osm | google_places | scraper
+  limit: 15
+  scraper_base_url: http://127.0.0.1:8080
+
+# --- model -------------------------------------------------------------------
+# provider left empty means auto-detect from whichever API key exists in .env.
+# Model independence is a judged criterion: four providers, one adapter.
+llm:
+  provider: ""            # groq | gemini | ollama | openai | openai_compatible | none
+  model: ""
+  temperature: 0.3
+  ollama_base_url: http://127.0.0.1:11434
+  ollama_model: llama3.1
+
+# --- outreach ----------------------------------------------------------------
+outreach:
+  daily_send_cap: 20      # hard refusal at the cap, never a silent drop
+  auto_reply: true        # reply with a short acknowledgement when interested
+  notify_telegram: true   # alert when a reply needs a human
+
+# --- scoring -----------------------------------------------------------------
+# How an evidence card earns its priority score. Weights must sum to 1.0.
+# The score is deterministic: computed from what we observed, never from a model.
+scoring:
+  weights:
+    revenue_impact: 0.40  # how much money the gap costs the business
+    fix_effort: 0.25      # cheap and demonstrable beats expensive and vague
+    evidence_strength: 0.20  # how many pages back the observation
+    service_fit: 0.15     # how well the gap matches what the caller sells
+
+# --- transport ---------------------------------------------------------------
+http:
+  timeout: 10
+  rate_limit_seconds: 1.0
+  allow_fallback: 0
+  user_agent: MarketPilot-Prototype/1.0

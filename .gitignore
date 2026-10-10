@@ -1,0 +1,22 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
+*.docx
+.DS_Store
+
+# cloned reference repos are not our code
+workspace/repos/
+# generated at runtime
+prototype/demos/
+prototype/data/demos/
+prototype/data/*.db
+prototype/data/*.db-*
+marketpilot/
+marketpilot/.env
+# vercel project link (contains a team id, never commit it)
+.vercel/
+# every credential in one place - never commit this
+workspace/MASTER_CREDENTIALS.md
