@@ -1,0 +1,86 @@
+{
+  "_about": "Cached snapshot of a real OpenStreetMap Overpass query (amenity=cafe|restaurant|bar, shop=hairdresser|beauty around Hyderabad), captured from live data so the demo can run when no discovery backend is reachable. Nothing here is invented. The audit still fetches each website live - these rows only seed discovery.",
+  "_source": "https://overpass-api.de/api/interpreter (OpenStreetMap, ODbL)",
+  "_captured_at": "2026-10-09T09:05:39+00:00",
+  "_count": 6,
+  "businesses": [
+    {
+      "external_id": "node/1802664777",
+      "name": "Aviyal Veg Restaurant",
+      "website": "https://www.aviyal.in/",
+      "phone": null,
+      "email": null,
+      "address": "103 HITEC City Main Road",
+      "city": "Hyderabad",
+      "rating": null,
+      "review_count": null,
+      "latitude": 17.4470642,
+      "longitude": 78.3783626
+    },
+    {
+      "external_id": "node/2466615436",
+      "name": "Kim Fung",
+      "website": "https://www.zomato.com/hyderabad/kim-fung-tarnaka",
+      "phone": "+919246115219",
+      "email": null,
+      "address": null,
+      "city": "Hyderabad",
+      "rating": null,
+      "review_count": null,
+      "latitude": 17.4285099,
+      "longitude": 78.528475
+    },
+    {
+      "external_id": "node/2542979700",
+      "name": "Shiva Ganga Resturant",
+      "website": "https://www.ganga.com/",
+      "phone": "040-40056754",
+      "email": null,
+      "address": "Foot over Bridge Hyderabad 500038",
+      "city": "Hyderabad",
+      "rating": null,
+      "review_count": null,
+      "latitude": 17.370084,
+      "longitude": 78.5199818
+    },
+    {
+      "external_id": "node/3523097051",
+      "name": "Hotel Suprabhat",
+      "website": "https://www.suprabhathotel.com/",
+      "phone": "02027175106",
+      "email": "hotelsuprabhat@yahoo.in",
+      "address": "Habsiguda 'X' Roads",
+      "city": "Hyderabad",
+      "rating": null,
+      "review_count": null,
+      "latitude": 17.4195083,
+      "longitude": 78.5406022
+    },
+    {
+      "external_id": "node/4664868089",
+      "name": "Naturals",
+      "website": "https://naturals.in/",
+      "phone": "+914042004242",
+      "email": "care@naturals.in",
+      "address": null,
+      "city": "Hyderabad",
+      "rating": null,
+      "review_count": null,
+      "latitude": 17.493546,
+      "longitude": 78.3280016
+    },
+    {
+      "external_id": "node/5257229421",
+      "name": "Ciclo Café",
+      "website": "https://ciclo.cafe/",
+      "phone": null,
+      "email": null,
+      "address": null,
+      "city": "Hyderabad",
+      "rating": null,
+      "review_count": null,
+      "latitude": 17.4336528,
+      "longitude": 78.4047279
+    }
+  ]
+}
