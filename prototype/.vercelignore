@@ -1,0 +1,15 @@
+# Never upload secrets to the deployment bundle.
+.env
+.env.*
+!.env.example
+
+# Not needed at runtime.
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+tests
+outbox.log
+data/*.db
+data/*.db-*
