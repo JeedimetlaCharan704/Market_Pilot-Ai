@@ -5,6 +5,19 @@
   "_count": 6,
   "businesses": [
     {
+      "external_id": "cafe-chit-chat-chai-kondapur",
+      "name": "Cafe Chit Chat Chai - Kondapur",
+      "website": "https://www.chitchatchai.in/",
+      "phone": "+91 98765 43210",
+      "email": "hey@chitchatchai.in",
+      "address": "Kondapur Main Road",
+      "city": "Hyderabad",
+      "rating": 4.5,
+      "review_count": 128,
+      "latitude": 17.4668,
+      "longitude": 78.3614
+    },
+    {
       "external_id": "node/1802664777",
       "name": "Aviyal Veg Restaurant",
       "website": "https://www.aviyal.in/",

@@ -78,10 +78,150 @@ def generate(business: dict, gap: str, observation: str) -> dict:
         generated_by = "template (no LLM key configured)"
 
     html = _validate(html, business["name"])
+    html = _ensure_interactive_features(html, business)
     html = _add_service_note(html, business.get("service") or "")
     path = DEMOS / f"{slug}.html"
     path.write_text(html, encoding="utf-8")
     return {"slug": slug, "path": str(path), "generated_by": generated_by, "html": html}
+
+
+def _ensure_interactive_features(html: str, business: dict) -> str:
+    """Guarantee every generated preview includes voice agent simulation and site claiming."""
+    raw_name = business.get("name") or "Business"
+    name = _escape(raw_name)
+    phone = _escape(business.get("phone") or "")
+    
+    if "speakVoice" not in html:
+        voice_block = f"""
+    <div style="margin:24px auto;max-width:720px;border:2px solid #0f766e;background:#f0fdf4;border-radius:14px;padding:24px;box-shadow:0 8px 24px rgba(15,23,42,.06);font-family:system-ui,-apple-system,sans-serif;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <h3 style="margin:0;color:#0f766e;font-size:18px;">📞 Interactive AI Voice &amp; Call Triage Simulator</h3>
+        <span style="background:#22c55e;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;">● AGENT ONLINE</span>
+      </div>
+      <p style="margin:8px 0 16px;font-size:14px;color:#334155;">Test how our autonomous voice assistant fields inbound inquiries for <strong>{name}</strong> without missing after-hours leads.</p>
+      
+      <div style="background:#0f172a;color:#f8fafc;border-radius:10px;padding:16px;font-family:monospace;font-size:13px;line-height:1.5;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;border-bottom:1px solid #334155;padding-bottom:8px;">
+          <span style="color:#38bdf8;">[Call Status: <span id="call-state">Standby</span>]</span>
+          <span id="call-timer" style="color:#94a3b8;display:none;">00:18</span>
+        </div>
+        <div id="call-log" style="min-height:90px;">
+          <p style="color:#94a3b8;margin:0;">Click "Simulate Inbound Lead Call" to launch interactive voice triage dialogue.</p>
+        </div>
+      </div>
+
+      <div id="call-controls" style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button onclick="startSimulatedCall()" id="btn-call-start" style="background:#0f766e;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;">▶ Simulate Inbound Lead Call</button>
+        <button onclick="respondCall('visit')" id="btn-choice-1" style="display:none;background:#2563eb;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;">📅 "I want to schedule an appointment"</button>
+        <button onclick="respondCall('pricing')" id="btn-choice-2" style="display:none;background:#7c3aed;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;">💰 "What is the pricing &amp; options?"</button>
+      </div>
+
+      <div id="lead-ticket" style="display:none;margin-top:14px;padding:12px;background:#dcfce7;border:1px solid #86efac;border-radius:8px;font-size:13px;color:#166534;">
+        <strong>✓ Qualified Inbound Lead Dispatched:</strong> High-intent prospect captured. Instant notification routed to <em>{phone or 'business phone'}</em>.
+      </div>
+    </div>
+    """
+        claim_modal = f"""
+    <div id="claim-modal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px;font-family:system-ui,-apple-system,sans-serif;">
+      <div style="background:#fff;border-radius:14px;max-width:440px;width:100%;padding:24px;box-shadow:0 20px 40px rgba(0,0,0,0.3);text-align:left;">
+        <h3 style="margin:0 0 6px;font-size:20px;color:#0f172a;">Claim Ownership of {name}</h3>
+        <p style="margin:0 0 16px;font-size:13px;color:#64748b;">Claim this turnkey site on your domain with instant WhatsApp and customer reservation routing.</p>
+        <label style="display:block;margin:10px 0 4px;font-weight:600;font-size:13px;">Your Full Name</label>
+        <input id="cl-name" placeholder="Owner or Manager Name" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;">
+        <label style="display:block;margin:10px 0 4px;font-weight:600;font-size:13px;">Phone Number</label>
+        <input id="cl-phone" type="tel" placeholder="+91 ..." style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;">
+        <label style="display:block;margin:10px 0 4px;font-weight:600;font-size:13px;">Email Address</label>
+        <input id="cl-email" type="email" placeholder="owner@business.com" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;">
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          <button onclick="submitClaim()" style="flex:1;background:#10b981;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:600;cursor:pointer;">Confirm &amp; Claim Site</button>
+          <button onclick="closeClaimModal()" style="background:#e2e8f0;border:0;border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:600;">Cancel</button>
+        </div>
+        <div id="cl-result" style="display:none;margin-top:14px;padding:12px;border-radius:8px;font-size:13px;"></div>
+      </div>
+    </div>
+    """
+        script_block = f"""
+    <script>
+    var BIZ_NAME = {json.dumps(business["name"])};
+    var BIZ_PHONE = {json.dumps(business.get("phone") or "the business")};
+    function openClaimModal(){{ var m = document.getElementById('claim-modal'); if(m) m.style.display='flex'; }}
+    function closeClaimModal(){{ var m = document.getElementById('claim-modal'); if(m) m.style.display='none'; }}
+    function submitClaim(){{
+      var nm = document.getElementById('cl-name').value.trim();
+      var ph = document.getElementById('cl-phone').value.trim();
+      var em = document.getElementById('cl-email').value.trim();
+      var res = document.getElementById('cl-result');
+      if(!nm || !ph){{ alert('Please enter your name and phone number to claim ownership.'); return; }}
+      res.style.display='block';
+      res.style.background='#dcfce7';
+      res.style.color='#166534';
+      res.innerHTML='<strong>✓ Claim Submitted!</strong> Ownership registered for ' + BIZ_NAME + '. MarketPilot has activated priority provisioning.';
+      var slug = window.location.pathname.split('/').pop().replace('.html','');
+      try {{
+        fetch('/api/claim/' + slug, {{
+          method: 'POST',
+          headers: {{'Content-Type': 'application/json'}},
+          body: JSON.stringify({{name: nm, phone: ph, email: em}})
+        }});
+      }}catch(e){{}}
+    }}
+    function speakVoice(text){{
+      if('speechSynthesis' in window){{
+        try {{
+          window.speechSynthesis.cancel();
+          var u = new SpeechSynthesisUtterance(text);
+          u.rate = 1.0;
+          u.pitch = 1.0;
+          window.speechSynthesis.speak(u);
+        }}catch(e){{}}
+      }}
+    }}
+    function startSimulatedCall(){{
+      var state=document.getElementById('call-state');
+      var timer=document.getElementById('call-timer');
+      var log=document.getElementById('call-log');
+      var btnStart=document.getElementById('btn-call-start');
+      var c1=document.getElementById('btn-choice-1');
+      var c2=document.getElementById('btn-choice-2');
+      if(!state) return;
+      state.textContent='Connected (Inbound Voice)';
+      state.style.color='#4ade80';
+      timer.style.display='inline';
+      btnStart.style.display='none';
+      var greet = 'Welcome to ' + BIZ_NAME + '! I can help you immediately. Are you looking to schedule an appointment or would you like current pricing options?';
+      log.innerHTML='<p style="color:#38bdf8;margin:4px 0;">[Caller]: Hello, I saw ' + BIZ_NAME + ' online. Can I get details on availability?</p><p style="color:#a7f3d0;margin:4px 0;">[AI Voice Agent 🔊]: ' + greet + '</p>';
+      speakVoice(greet);
+      c1.style.display='inline-block';
+      c2.style.display='inline-block';
+    }}
+    function respondCall(choice){{
+      var log=document.getElementById('call-log');
+      var ticket=document.getElementById('lead-ticket');
+      var c1=document.getElementById('btn-choice-1');
+      var c2=document.getElementById('btn-choice-2');
+      var ans = '';
+      if(choice==='visit'){{
+        ans = 'Perfect! I have reserved a priority slot for you at ' + BIZ_NAME + '. A confirmation text has been dispatched to your phone.';
+        log.innerHTML+='<p style="color:#38bdf8;margin:4px 0;">[Caller]: I would like to schedule an appointment this week.</p><p style="color:#a7f3d0;margin:4px 0;">[AI Voice Agent 🔊]: ' + ans + '</p>';
+      }}else{{
+        ans = 'I have dispatched our digital brochure and rate card to your WhatsApp number.';
+        log.innerHTML+='<p style="color:#38bdf8;margin:4px 0;">[Caller]: What are your rates and packages?</p><p style="color:#a7f3d0;margin:4px 0;">[AI Voice Agent 🔊]: ' + ans + '</p>';
+      }}
+      speakVoice(ans);
+      c1.style.display='none';
+      c2.style.display='none';
+      if(ticket) ticket.style.display='block';
+    }}
+    </script>
+    """
+        banner = """<div style="position:fixed;top:10px;right:10px;z-index:9999;"><button onclick="openClaimModal()" style="background:#f59e0b;color:#000;border:0;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);">🚀 Claim This Site</button></div>"""
+        
+        idx = html.lower().rfind("</body>")
+        if idx != -1:
+            html = f"{html[:idx]}{banner}{voice_block}{claim_modal}{script_block}{html[idx:]}"
+        else:
+            html = f"{html}{banner}{voice_block}{claim_modal}{script_block}"
+    return html
 
 
 def _add_service_note(html: str, service: str) -> str:

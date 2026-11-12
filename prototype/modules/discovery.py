@@ -26,10 +26,9 @@ from . import net
 from .settings import ROOT, runtime_dir, settings
 
 OVERPASS_ENDPOINTS = [
-    "https://overpass.kumi.systems/api/interpreter",
     "https://overpass-api.de/api/interpreter",
-    "https://overpass.private.coffee/api/interpreter",
-    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+    "https://lz4.overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
 ]
 NOMINATIM = "https://nominatim.openstreetmap.org/search"
 PHOTON = "https://photon.komoot.io/api/"
@@ -185,10 +184,10 @@ def _why(response) -> str:
 def _overpass(query: str) -> dict:
     url_query = urllib.parse.urlencode({"data": query})
     errors: list[str] = []
-    for attempt in range(2):
+    for attempt in range(1):
         for endpoint in OVERPASS_ENDPOINTS:
             try:
-                response = net.get(f"{endpoint}?{url_query}", check_robots=False, timeout=45)
+                response = net.get(f"{endpoint}?{url_query}", check_robots=False, timeout=3.5)
             except net.FetchError as exc:
                 errors.append(f"{endpoint.split('/')[2]}: {exc}")
                 continue
@@ -243,7 +242,7 @@ def osm_search(business_type: str, city: str, limit: int) -> list[dict]:
             )
         except DiscoveryError as exc:
             errors.append(str(exc))
-            batch = []
+            break
         for element in batch:
             found[(element.get("type"), element.get("id"))] = element
         if len(found) >= max(4, limit):
